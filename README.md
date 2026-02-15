@@ -11,25 +11,22 @@ A full-stack e-commerce platform built with React, TypeScript, Tailwind CSS, Exp
 git clone <repository-url>
 cd Ecomm-App-Supabase
 
-# Run the installation script
+# Run the installation script (Linux/Mac)
 chmod +x install.sh start.sh
 ./install.sh
+
+# Or on Windows, run:
+install.bat
 ```
 
 ### Option 2: Manual Setup
 
 ```bash
-# 1. Install all dependencies
-npm install --workspaces
+# 1. Install all dependencies (root + workspaces)
+npm install
 
-# 2. Install frontend dependencies
-cd frontend && npm install && cd ..
-
-# 3. Install backend dependencies
-cd backend && npm install && cd ..
-
-# 4. Setup database (SQLite by default)
-cd backend && npm run setup:sqlite && cd ..
+# 2. Setup database (SQLite by default)
+cd backend && npm run setup && cd ..
 ```
 
 ## 🏃 Running the Application
@@ -152,7 +149,7 @@ VITE_API_URL=http://localhost:3000/api
 
 ```bash
 cd backend
-npm run setup:sqlite
+npm run setup
 ```
 
 This will:
@@ -307,8 +304,7 @@ npm run preview      # Preview production build
 cd backend
 npm run dev:sqlite   # Start with SQLite
 npm run dev:pg       # Start with PostgreSQL
-npm run setup:sqlite # Setup SQLite database
-npm run setup:pg     # Setup PostgreSQL database
+npm run setup        # Setup database (migrations + seed)
 npm run build        # Compile TypeScript
 npm run prisma:studio # Open Prisma database UI
 ```
@@ -327,8 +323,8 @@ lsof -ti :5173 | xargs kill -9
 ```bash
 # Reset database
 cd backend
-rm -f dev.db
-npm run setup:sqlite
+rm -f prisma/dev.db
+npm run setup
 ```
 
 ### Clear Cache
