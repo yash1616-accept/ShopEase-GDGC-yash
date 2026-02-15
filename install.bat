@@ -54,55 +54,19 @@ if not exist "package.json" (
     exit /b 1
 )
 
-:: Install root dependencies
-echo [2/6] Installing Root Dependencies...
-call npm install --workspaces
+:: Install root dependencies first (including concurrently)
+echo [2/6] Installing All Dependencies...
+call npm install
 if %ERRORLEVEL% neq 0 (
-    echo   [ERROR] Failed to install root dependencies
+    echo   [ERROR] Failed to install dependencies
     set "ERRORS=1"
     goto :error_handler
 )
-echo   [OK] Root dependencies installed
-echo.
-
-:: Install frontend dependencies
-echo [3/6] Installing Frontend Dependencies...
-if not exist "frontend\package.json" (
-    echo   [WARNING] frontend/package.json not found, skipping frontend
-) else (
-    cd /d frontend
-    call npm install
-    if %ERRORLEVEL% neq 0 (
-        echo   [ERROR] Failed to install frontend dependencies
-        set "ERRORS=1"
-        cd /d ..
-        goto :error_handler
-    )
-    cd /d ..
-    echo   [OK] Frontend dependencies installed
-)
-echo.
-
-:: Install backend dependencies
-echo [4/6] Installing Backend Dependencies...
-if not exist "backend\package.json" (
-    echo   [WARNING] backend/package.json not found, skipping backend
-) else (
-    cd /d backend
-    call npm install
-    if %ERRORLEVEL% neq 0 (
-        echo   [ERROR] Failed to install backend dependencies
-        set "ERRORS=1"
-        cd /d ..
-        goto :error_handler
-    )
-    cd /d ..
-    echo   [OK] Backend dependencies installed
-)
+echo   [OK] All dependencies installed (root + workspaces)
 echo.
 
 :: Setup database (SQLite)
-echo [5/6] Setting Up Database (SQLite)...
+echo [3/6] Setting Up Database (SQLite)...
 if not exist "backend\package.json" (
     echo   [WARNING] Backend not found, skipping database setup
 ) else (
@@ -138,7 +102,7 @@ if not exist "backend\package.json" (
 echo.
 
 :: Build the project
-echo [6/6] Building Project...
+echo [4/6] Building Project...
 if not exist "frontend\package.json" (
     echo   [WARNING] Frontend not found, skipping build
 ) else (
