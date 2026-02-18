@@ -5,7 +5,9 @@
       "src": "backend/package.json",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["backend/prisma/**"]
+        "includeFiles": [
+          "prisma/**"
+        ]
       }
     },
     {

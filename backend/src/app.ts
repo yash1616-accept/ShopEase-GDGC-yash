@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import cors from "cors";
 import helmet from "helmet";
@@ -30,12 +31,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Serve static files from the frontend/dist directory
-app.use(express.static(path.join(__dirname, "../../frontend/dist")));
+const frontendDist = path.join(__dirname, "../../frontend/dist");
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
 
-// Handle client-side routing by serving index.html for all other routes
-app.get("*", (_req, res) => {
-  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
-});
+  // Handle client-side routing by serving index.html for all other routes
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(frontendDist, "index.html"));
+  });
+} else {
+  console.warn("Frontend dist not found, running in API-only mode");
+}
 
 app.use(
   (
