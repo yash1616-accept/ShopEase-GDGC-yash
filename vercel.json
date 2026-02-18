@@ -6,26 +6,16 @@
       "use": "@vercel/node",
       "config": {
         "includeFiles": [
-          "prisma/**"
+          "prisma/**",
+          "../frontend/dist/**"
         ]
-      }
-    },
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "frontend/dist"
       }
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "backend/dist/app.js"
-    },
-    {
       "src": "/(.*)",
-      "dest": "frontend/dist/$1"
+      "dest": "backend/dist/app.js"
     }
   ]
 }
