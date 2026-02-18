@@ -11,7 +11,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(helmet());
+app.use((helmet as any)());
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
